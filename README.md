@@ -14,4 +14,4 @@ $ PORT=1234 stack run hsbot
 ```
 Port is optional, default is `3000`
 
-Then, set a [webhook](https://core.telegram.org/bots/webhooks). If you run on dektop, you need https tunnel, like [ngrok](https://ngrok.com/).
+Then, set a [webhook](https://core.telegram.org/bots/webhooks). If you run on desktop, you need https tunnel, like [ngrok](https://ngrok.com/).

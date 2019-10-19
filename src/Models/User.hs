@@ -9,6 +9,6 @@ module Models.User where
         first_name :: String,
         last_name :: Maybe String,
         username :: Maybe String
-    } deriving (Show, Generic)
+    } deriving (Show, Generic, Eq)
 
     instance FromJSON User

@@ -21,8 +21,10 @@ main = do
 
     post "/:token" $ do
       update <- jsonData :: ActionM Update
-      liftIO $ processUpdate update
-      text $ "OK"
+      resp <- liftIO $ processUpdate update
+      case resp of
+        Nothing -> text "OK"
+        Just j -> json j
 
     notFound $ do
       html $ "<h3>woopsy~doopsy</h3>"

@@ -6,13 +6,19 @@ module UpdateProcessor where
     import Models.Update
     import Models.Message
     import qualified Models.Chat as C
-
+    
+    type JsonResp = IO (Maybe Value)
     
     processUpdate :: Update -> JsonResp
-    processUpdate (Update{ message = Just msg @ Message{ from = Just ( fromUser ), new_chat_members= Just( newMembers ) }}) 
+    processUpdate Update { 
+        message = Just msg @ Message {
+            from = Just fromUser, 
+            new_chat_members = Just newMembers
+        }
+    }
         | elem fromUser newMembers = do
             replyToMessage (C.id $ chat msg) (message_id msg) "wellcome" 
-
+    
     processUpdate u = do
         print u
         return Nothing
@@ -27,5 +33,3 @@ module UpdateProcessor where
                 "reply_to_message_id" .= messageId,
                 "text" .= txt
             ]
-
-    type JsonResp = IO (Maybe Value)

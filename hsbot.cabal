@@ -10,6 +10,7 @@ executable          hsbot
     extensions:     OverloadedStrings
     other-modules:  
                 UpdateProcessor, 
+                Config,
                 Models.Update, 
                 Models.User, 
                 Models.Update,
@@ -20,3 +21,4 @@ executable          hsbot
                   , aeson
                   , wai
                   , text
+                  , config-ini

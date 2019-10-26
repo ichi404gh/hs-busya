@@ -1,4 +1,4 @@
-{-# LANGUAGE OverloadedStrings #-}
+-- {-# LANGUAGE OverloadedStrings #-}
 
 import Web.Scotty
 import System.Environment
@@ -7,6 +7,7 @@ import Data.Maybe
 import Models.Update
 import Control.Monad.IO.Class
 import UpdateProcessor
+import qualified Config
 
 getPort :: IO Int
 getPort = do
@@ -17,12 +18,16 @@ getPort = do
 main :: IO ()
 main = do
   port <- getPort
-  scotty port $ do
+  configResult <- Config.config
+  case configResult of
+    Left s -> error s
+    Right config -> 
+      scotty port $ do
 
-    post "/:token" $ do
-      update <- jsonData :: ActionM Update
-      resp <- liftIO $ processUpdate update
-      maybe (text "OK") json resp
+        post "/:token" $ do
+          update <- jsonData :: ActionM Update
+          resp <- liftIO $ processUpdate config update
+          maybe (text "OK") json resp
 
-    notFound $ do
-      html $ "<h3>woopsy~doopsy</h3>"
+        notFound $ do
+          html $ "<h3>woopsy~doopsy</h3>"

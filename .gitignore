@@ -8,3 +8,4 @@ cabal.sandbox.config
 *.keter
 .idea
 .vscode
+settings.ini

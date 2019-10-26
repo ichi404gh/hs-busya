@@ -6,20 +6,23 @@ module UpdateProcessor where
     import Models.Update
     import Models.Message
     import qualified Models.Chat as C
-    
+    import qualified Config
+
     type JsonResp = IO (Maybe Value)
     
-    processUpdate :: Update -> JsonResp
-    processUpdate Update { 
+    processUpdate :: Config.Config -> Update -> JsonResp
+    processUpdate cfg Update { 
         message = Just msg @ Message {
             from = Just fromUser, 
             new_chat_members = Just newMembers
         }
     }
         | elem fromUser newMembers = do
-            replyToMessage (C.id $ chat msg) (message_id msg) "wellcome" 
+            replyToMessage (C.id . chat $ msg) (message_id msg) (getMessage cfg)
+                where 
+                    getMessage = Config.wMessage . Config.cfWellcome 
     
-    processUpdate u = do
+    processUpdate _ u = do
         print u
         return Nothing
     

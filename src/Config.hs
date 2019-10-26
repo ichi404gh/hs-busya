@@ -19,9 +19,8 @@ module Config where
         return Config { cfWellcome = wellcomeCf }
 
 
-    config :: IO (Either String Config)
-    config = do
-        settingsFile <- DTIO.readFile "./settings.ini"
+    initConfig :: FilePath -> IO (Either String Config)
+    initConfig path = do
+        settingsFile <- DTIO.readFile path
         let eitherCfg = parseIniFile settingsFile Config.configParser
         return eitherCfg
-        

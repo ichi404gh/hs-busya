@@ -11,14 +11,19 @@ import qualified Config
 
 getPort :: IO Int
 getPort = do
-  mbPortStr <- lookupEnv "PORT" :: IO (Maybe String)
+  mbPortStr <- lookupEnv "PORT"
   return $ fromMaybe 3000 $ mbPortStr >>= readMaybe
-  
+
+getConfigPath :: IO String
+getConfigPath = do
+  mbConfigPath <- lookupEnv "CONFIGPATH"
+  return $ fromMaybe "./settings.ini" mbConfigPath
 
 main :: IO ()
 main = do
   port <- getPort
-  configResult <- Config.config
+  configPath <- getConfigPath
+  configResult <- Config.initConfig configPath
   case configResult of
     Left s -> error s
     Right config -> 
